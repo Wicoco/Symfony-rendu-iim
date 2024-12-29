@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PanierController!{% endblock %}
+
+{% block body %}
+<h1>{{"cart.title"|trans}}</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{"cart.nbOrder"|trans}}</th>
+                <th scope="col">{{"cart.paymentDate"|trans}}</th>
+                <th scope="col">{{"cart.content"|trans}}</th>
+                <th scope="col">{{"cart.price"|trans}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                <th>{{"commande.id"|trans}}</th>
+                <th scope="row">{{commande.date|date('Y-m-d H:i:s')}}</th>
+               <th>
+                {% for produit in commande.contenuPaniers %}
+                   | {{produit.produit.nom}} |
+                {% endfor %}
+                </th>
+                 {% set totaleUn = 0 %} 
+                    {% set total = 0 %} 
+                    {% for produit in commande.contenuPaniers %}  
+                        {% set totaleUn = produit.quantity * produit.produit.prix %}
+                        {% set total = total + totaleUn %} 
+                    {% endfor %}
+                   <th>{{total}}€</th>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}

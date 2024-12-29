@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ asset('img/logo.png') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+       
+        {% block stylesheets %}
+             <link rel="stylesheet" href="{{ asset('styles/style.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <nav class="d-flex justify-content-between p-3">
+                <div>
+                    <a href='{{ path('home')}}'>{{'base.home'|trans}}</a>   
+                </div>
+                {% if app.user is not null %}    
+                    <div>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('seeUser') }}">{{"base.user"|trans}}</a>
+                             <span> | <span>
+                            <a href="{{ path('commande_nonPayer') }}">{{"base.currentOrder"|trans}}</a>
+                            <span> | <span>
+                        {% endif %} 
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('produit_new')}}">{{"base.product"|trans}}</a>
+                            <span> | <span>
+                        {% endif %}
+                        
+                            <a href='{{ path('panier') }}'>{{"base.cart"|trans}}</a>
+                            <span> | <span>
+                        
+                            <a href='{{ path('commande')}}'>{{"base.orders"|trans}}</a>
+                            <span> | <span>
+                            <a href="{{ path('compte', {'id': app.user.id} ) }}">{{"base.account"|trans}}</a>
+                             <span> | <span>
+                        <a href="{{ path('app_logout') }}">{{"base.logout"|trans}}</a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="{{ path('app_login') }}">{{"base.login"|trans}}</a>
+                        <span>/<span>
+                        <a href="{{ path('app_register') }}">{{"base.register"|trans}}</a>
+                    </div>
+                {% endif %}
+
+            </nav>
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <p class="my-2 alert alert-{{ type }}">{{ message }}</p>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
+

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Error tout court{% endblock %}
+
+    
+{% block body %}
+
+    <img class="d-block m-auto" src="{{asset('error.jpg')}}">
+
+    <p class="text-center" style="font-size:25px;">{{"error.simple"|trans}}</p>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"product.show.title"|trans}}{% endblock %}
+
+{% block body %}
+    <h1></h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{"product.show.name"|trans}}</th>
+                <td>{{ produit.Nom }}</td>
+            </tr>
+            <tr>
+                <th>{{"product.show.description"|trans}}</th>
+                <td>{{ produit.Description }}</td>
+            </tr>
+            <tr>
+                <th>{{"product.show.price"|trans}}</th>
+                <td>{{ produit.prix }}</td>
+            </tr>
+            <tr>
+                <th>{{"product.show.stock"|trans}}</th>
+                <td>{{ produit.stock }}</td>
+            </tr>
+            <tr>
+                 {% if produit.photo is not null %}
+                 <th>{{"product.show.photo"|trans}}</th>
+                    <td>
+                        <img style="width:50%;" src="{{ asset('uploads/' ~ produit.photo) }}">
+                    </td>
+                {% endif %} 
+            </tr>
+        </tbody>
+    </table>
+      {% if is_granted('ROLE_ADMIN') %}
+        <div class='d-flex align-items-center'>
+            <a href="{{ path('produit_edit', {'id': produit.id}) }}" class="btn btn-primary">{{"product.show.edit"|trans}}</a>
+            {{ include('produit/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+
+    <a href="{{ path('home') }}">back to list</a>
+  
+
+<h2>{{"product.show.addToCart"|trans}}</h2>
+    {{form(form)}}
+
+{% endblock %}
